@@ -23,10 +23,10 @@ public class Main {
             final String GET_URL = "https://jservice.kenzie.academy/api/clues";
             Scanner scan = new Scanner(System.in);
             Random rand = new Random();
-            CustomHttpClient CluesHttpClient = new CustomHttpClient();
+            CustomHttpClient cluesHttpClient = new CustomHttpClient();
 
             Integer[] cluesIDsArray = generateRandomCluesIDs(rand);
-            startGame(cluesIDsArray, CluesHttpClient, GET_URL, scan);
+            startGame(cluesIDsArray, cluesHttpClient, GET_URL, scan);
         } catch (JsonProcessingException e) {
             System.out.println(e.getMessage());
         }
@@ -54,7 +54,7 @@ public class Main {
         return clueIDArray;
     }
 
-    public static void startGame(Integer[] clueIDArray, CustomHttpClient CluesHttpClient, String URL,
+    public static void startGame(Integer[] clueIDArray, CustomHttpClient cluesHttpClient, String URL,
                                  Scanner scanner) throws JsonProcessingException {
         String[] cluesArray = new String[10];
         String[] cluesQuestionsArray = new String[10];
@@ -62,14 +62,14 @@ public class Main {
         String[] cluesCategoryNamesArray = new String[10];
         int totalScore = 0;
 
-        fillInData(clueIDArray, CluesHttpClient, URL, cluesArray, cluesQuestionsArray, cluesAnswersArray,
+        fillInData(clueIDArray, cluesHttpClient, URL, cluesArray, cluesQuestionsArray, cluesAnswersArray,
                 cluesCategoryNamesArray);
 
         try {
             for (int i = 0; i < 10; i++) {
                 System.out.println("Question " + (i + 1));
-                System.out.println(cluesCategoryNamesArray[i]);
-                System.out.println(cluesQuestionsArray[i]);
+                System.out.println("Category: " + cluesCategoryNamesArray[i]);
+                System.out.println("Question: " + cluesQuestionsArray[i]);
                 System.out.print("Your Answer: ");
 
                 String response = scanner.nextLine();
@@ -93,7 +93,7 @@ public class Main {
         System.out.println("Your final score is: " + totalScore);
     }
 
-    public static void fillInData(Integer[] clueIDArray, CustomHttpClient CluesHttpClient, String URL,
+    public static void fillInData(Integer[] clueIDArray, CustomHttpClient cluesHttpClient, String URL,
                                   String[] cluesArray, String[] cluesQuestionsArray, String[] cluesAnswersArray,
                                   String[] cluesCategoryNamesArray) throws JsonProcessingException {
         for (int i = 0; i < 10; i++) {
@@ -101,9 +101,9 @@ public class Main {
         }
 
         for (int i = 0; i < 10; i++) {
-            cluesQuestionsArray[i] = CluesHttpClient.getClueQuestion(cluesArray[i]);
-            cluesAnswersArray[i] = CluesHttpClient.getClueAnswer(cluesArray[i]);
-            cluesCategoryNamesArray[i] = CluesHttpClient.getClueCategoryName(cluesArray[i]);
+            cluesQuestionsArray[i] = cluesHttpClient.getClueQuestion(cluesArray[i]);
+            cluesAnswersArray[i] = cluesHttpClient.getClueAnswer(cluesArray[i]);
+            cluesCategoryNamesArray[i] = cluesHttpClient.getClueCategoryTitle(cluesArray[i]);
         }
     }
 }
