@@ -66,6 +66,9 @@ public class Main {
                 cluesCategoryNamesArray);
 
         try {
+            System.out.println("The game will begin now. You have 10 questions to answer.");
+            System.out.println();
+
             for (int i = 0; i < 10; i++) {
                 System.out.println("Question " + (i + 1));
                 System.out.println("Category: " + cluesCategoryNamesArray[i]);
