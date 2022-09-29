@@ -2,6 +2,7 @@ package com.kenzie.app;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class CustomHttpClient {
 
@@ -54,5 +56,34 @@ public class CustomHttpClient {
         CluesDTO cluesDTO = objectMapper.readValue(jsonString, CluesDTO.class);
 
         return cluesDTO.getCategory().getTitle();
+    }
+
+    //Formats input to be used for getCluesList() method
+    public String formatForList(String jsonString) {
+        return jsonString.substring(jsonString.indexOf("[{"), jsonString.lastIndexOf('}'));
+    }
+
+    public static List<CluesDTO> getCluesList(String jsonString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<CluesDTO>> typeReferenceListCluesDTO = new TypeReference<>() {};
+        List<CluesDTO> cluesList = objectMapper.readValue(jsonString, typeReferenceListCluesDTO);
+        //List<CluesDTO> cluesList = new ObjectMapper().readValue(jsonAsString, new TypeReference<List<CluesDTO>>(){});
+
+        return cluesList;
+    }
+
+    public static List<CluesDTO.Category> getCategoryList(String jsonString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<CluesDTO.Category>> typeReferenceListCluestDTO = new TypeReference<>() {};
+        List<CluesDTO.Category> categoryList = objectMapper.readValue(jsonString, typeReferenceListCluestDTO);
+
+        return categoryList;
+    }
+
+    public int getClueValue(String jsonString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CluesDTO cluesDTO = objectMapper.readValue(jsonString, CluesDTO.class);
+
+        return cluesDTO.getValue();
     }
 }
